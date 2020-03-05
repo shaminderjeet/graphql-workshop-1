@@ -14,7 +14,9 @@ const typeDefs = gql`
     email: String!
     age: Int
     id: ID!
-  }
+    posts:[Post!]!
+  }   
+
 
   type Post {
     title: String!
@@ -40,7 +42,13 @@ const resolvers = {
     author(post) {
       return db.users.find(user => user.id === post.author);
     }
+  },
+  User: {
+    posts(user) {
+      return db.posts.filter(post => post.author === user.id);
+    }
   }
+
 };
 
 const server = new GraphQLServer({
